@@ -1,0 +1,74 @@
+.add-user-page {
+  padding: 20px;
+  color: white;
+}
+
+/* الفورم */
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.user-form input {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+}
+
+.user-form button {
+  padding: 10px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* الجدول */
+.table-container {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid #334155;
+  text-align: left;
+}
+
+th {
+  color: #94a3b8;
+}
+
+.user-switch {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.user-switch button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #334155;
+  color: white;
+}
+
+.user-switch button.active {
+  background: #3b82f6;
+}
