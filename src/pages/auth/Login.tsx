@@ -68,7 +68,7 @@ export default function Login() {
     //Call API
 
     try {
-      const response = await fetch("http://localhost:3000/shops/login", {
+      const response = await fetch("http://192.168.1.4:3000/barbers/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

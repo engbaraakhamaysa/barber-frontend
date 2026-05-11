@@ -1,72 +1,105 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Booking = {
   id: number;
   name: string;
   phone: string;
-  time: string;
+  slot_time: string;
 };
 
-type AllBookings = {
-  baraa: Booking[];
-  ahmad: Booking[];
+type Slot = {
+  id: number;
+  slot_time: string;
+  is_booked: boolean;
 };
 
 export default function ShowTime() {
-  const [selectedUser, setSelectedUser] = useState<"baraa" | "ahmad">("baraa");
+  const [selectedUser, setSelectedUser] = useState<number>(1);
 
-  // بيانات تجريبية (لاحقاً رح تيجي من backend أو AddTime)
-  const [bookings] = useState<AllBookings>({
-    baraa: [
-      { id: 1, name: "Ali", phone: "0599999999", time: "10:00" },
-      { id: 2, name: "Omar", phone: "0588888888", time: "11:30" },
-    ],
-    ahmad: [{ id: 3, name: "Sara", phone: "0566666666", time: "09:00" }],
-  });
+  const [bookings, setBookings] = useState<Booking[]>([]);
+
+  const [slots, setSlots] = useState<Slot[]>([]);
+
+  /////////////////////////////////////////////////////////
+  //        GET BARBER FROM LOCAL STORAGE              //
+  /////////////////////////////////////////////////////////
+
+  const getBarber = () => {
+    return JSON.parse(localStorage.getItem("user") || "{}");
+  };
+
+  /////////////////////////////////////////////////////////
+  //              FETCH BOOKINGS                        //
+  /////////////////////////////////////////////////////////
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const barber = getBarber();
+
+        if (!barber?.id) return;
+
+        const res = await fetch(
+          `http://192.168.1.4:3000/api/customers/${barber.id}`,
+        );
+
+        const data = await res.json();
+
+        setBookings(data);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+
+    fetchBookings();
+  }, [selectedUser]);
+
+  /////////////////////////////////////////////////////////
+  //              FETCH SLOTS                           //
+  /////////////////////////////////////////////////////////
+
+  useEffect(() => {
+    const fetchSlots = async () => {
+      try {
+        const barber = getBarber();
+
+        if (!barber?.id) return;
+
+        const res = await fetch(
+          `http://192.168.1.4:3000/api/slots/${barber.id}`,
+        );
+
+        const data = await res.json();
+
+        setSlots(data);
+      } catch (error) {
+        console.error("Error fetching slots:", error);
+      }
+    };
+
+    fetchSlots();
+  }, [selectedUser]);
 
   return (
-    <div style={{ padding: "20px", color: "white" }}>
-      {/* اختيار المستخدم */}
-      <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
-        <button
-          onClick={() => setSelectedUser("baraa")}
-          style={{
-            padding: "8px",
-            background: selectedUser === "baraa" ? "#3b82f6" : "#334155",
-            color: "white",
-          }}
-        >
-          Baraa
-        </button>
+    <div
+      style={{
+        padding: "20px",
+        color: "white",
+      }}
+    >
+      <h2>📊 Barber Dashboard</h2>
 
-        <button
-          onClick={() => setSelectedUser("ahmad")}
-          style={{
-            padding: "8px",
-            background: selectedUser === "ahmad" ? "#3b82f6" : "#334155",
-            color: "white",
-          }}
-        >
-          Ahmad
-        </button>
-      </div>
-
-      {/* العنوان */}
-      <h2>Booked Times for {selectedUser}</h2>
-
-      {/* الجدول */}
+      <h3>📌 Customers Bookings</h3>
       <table
         style={{
           width: "100%",
-          marginTop: "10px",
           background: "#1e293b",
-          borderRadius: "10px",
-          overflow: "hidden",
+          marginTop: "10px",
         }}
       >
         <thead>
-          <tr style={{ background: "#0f172a" }}>
-            <th style={{ padding: "10px" }}>#</th>
+          <tr>
+            <th>#</th>
             <th>Name</th>
             <th>Phone</th>
             <th>Time</th>
@@ -74,19 +107,50 @@ export default function ShowTime() {
         </thead>
 
         <tbody>
-          {bookings[selectedUser].length === 0 ? (
+          {bookings.length === 0 ? (
             <tr>
-              <td colSpan={4} style={{ textAlign: "center", padding: "10px" }}>
-                No bookings yet
-              </td>
+              <td colSpan={4}>No bookings</td>
             </tr>
           ) : (
-            bookings[selectedUser].map((b, i) => (
-              <tr key={b.id} style={{ borderTop: "1px solid #334155" }}>
-                <td style={{ padding: "10px" }}>{i + 1}</td>
+            bookings.map((b, i) => (
+              <tr key={b.id}>
+                <td>{i + 1}</td>
                 <td>{b.name}</td>
                 <td>{b.phone}</td>
-                <td>{b.time}</td>
+                <td>{new Date(b.slot_time).toLocaleTimeString()}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+
+      <h3 style={{ marginTop: "20px" }}>⏰ Available Slots</h3>
+      <table
+        style={{
+          width: "100%",
+          background: "#1e293b",
+          marginTop: "10px",
+        }}
+      >
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {slots.length === 0 ? (
+            <tr>
+              <td colSpan={3}>No slots available</td>
+            </tr>
+          ) : (
+            slots.map((s, i) => (
+              <tr key={s.id}>
+                <td>{i + 1}</td>
+                <td>{new Date(s.slot_time).toLocaleTimeString()}</td>
+                <td>{s.is_booked ? "❌ Booked" : "✅ Available"}</td>
               </tr>
             ))
           )}

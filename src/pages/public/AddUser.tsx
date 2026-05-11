@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/addUser.css";
 
 type User = {
@@ -7,64 +7,96 @@ type User = {
   phone: string;
 };
 
-type UsersData = {
-  baraa: User[];
-  ahmad: User[];
-};
-
 export default function AddUser() {
-  const [selectedUser, setSelectedUser] = useState<"baraa" | "ahmad">("baraa");
-
+  const [users, setUsers] = useState<User[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
 
-  const [users, setUsers] = useState<UsersData>({
-    baraa: [],
-    ahmad: [],
-  });
+  /////////////////////////////////////////////////////////
+  //        GET CURRENT BARBER FROM LOCALSTORAGE         //
+  /////////////////////////////////////////////////////////
+  const getBarber = () => {
+    return JSON.parse(localStorage.getItem("user") || "{}");
+  };
 
-  const handleAddUser = (e: React.FormEvent) => {
+  /////////////////////////////////////////////////////////
+  //              GET CUSTOMERS BY BARBER ID            //
+  /////////////////////////////////////////////////////////
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const barber = getBarber();
+
+        if (!barber?.id) return;
+
+        const res = await fetch(
+          `http://192.168.1.4:3000/customers/${barber.id}`,
+        );
+
+        const data = await res.json();
+        setUsers(data);
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      }
+    };
+
+    fetchCustomers();
+  }, []);
+
+  /////////////////////////////////////////////////////////
+  //                 ADD NEW CUSTOMER                   //
+  /////////////////////////////////////////////////////////
+  const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!name || !phone) return;
 
-    const newUser: User = {
-      id: Date.now(),
-      name,
-      phone,
-    };
+    const barber = getBarber();
 
-    setUsers((prev) => ({
-      ...prev,
-      [selectedUser]: [...prev[selectedUser], newUser],
-    }));
+    try {
+      const res = await fetch("http://192.168.1.4:3000/customers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          phone,
+          barber_id: barber.id,
+        }),
+      });
 
-    setName("");
-    setPhone("");
+      const newUser = await res.json();
+
+      setUsers((prev) => [...prev, newUser]);
+
+      setName("");
+      setPhone("");
+    } catch (error) {
+      console.error("Error adding customer:", error);
+    }
+  };
+
+  /////////////////////////////////////////////////////////
+  //                 DELETE CUSTOMER                    //
+  /////////////////////////////////////////////////////////
+  const handleDelete = async (id: number) => {
+    try {
+      await fetch(`http://192.168.1.4:3000/customers/${id}`, {
+        method: "DELETE",
+      });
+
+      setUsers((prev) => prev.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error("Error deleting customer:", error);
+    }
   };
 
   return (
     <div className="add-user-page">
-      {/* اختيار المستخدم */}
-      <div className="user-switch">
-        <button
-          className={selectedUser === "baraa" ? "active" : ""}
-          onClick={() => setSelectedUser("baraa")}
-        >
-          Baraa
-        </button>
-
-        <button
-          className={selectedUser === "ahmad" ? "active" : ""}
-          onClick={() => setSelectedUser("ahmad")}
-        >
-          Ahmad
-        </button>
-      </div>
-
       {/* الفورم */}
       <form className="user-form" onSubmit={handleAddUser}>
-        <h2>Add Customer for {selectedUser}</h2>
+        <h2>Add Customer</h2>
 
         <input
           type="text"
@@ -85,7 +117,7 @@ export default function AddUser() {
 
       {/* الجدول */}
       <div className="table-container">
-        <h2>{selectedUser} Customers List</h2>
+        <h2>Customers List</h2>
 
         <table>
           <thead>
@@ -93,20 +125,29 @@ export default function AddUser() {
               <th>#</th>
               <th>Name</th>
               <th>Phone</th>
+              <th>Action</th>
             </tr>
           </thead>
 
           <tbody>
-            {users[selectedUser].length === 0 ? (
+            {users.length === 0 ? (
               <tr>
-                <td colSpan={3}>No customers yet</td>
+                <td colSpan={4}>No customers yet</td>
               </tr>
             ) : (
-              users[selectedUser].map((user, index) => (
+              users.map((user, index) => (
                 <tr key={user.id}>
                   <td>{index + 1}</td>
                   <td>{user.name}</td>
                   <td>{user.phone}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDelete(user.id)}
+                      style={{ color: "red" }}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))
             )}
