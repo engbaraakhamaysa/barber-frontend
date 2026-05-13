@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../../styles/addUser.css";
+import { customersService } from "../../api/customersService";
 
 type User = {
   id: number;
@@ -29,11 +30,7 @@ export default function AddUser() {
 
         if (!barber?.id) return;
 
-        const res = await fetch(
-          `http://192.168.1.4:3000/customers/${barber.id}`,
-        );
-
-        const data = await res.json();
+        const data = await customersService.get(barber.id);
         setUsers(data);
       } catch (error) {
         console.error("Error fetching customers:", error);
@@ -50,23 +47,14 @@ export default function AddUser() {
     e.preventDefault();
 
     if (!name || !phone) return;
-
     const barber = getBarber();
 
     try {
-      const res = await fetch("http://192.168.1.4:3000/customers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          phone,
-          barber_id: barber.id,
-        }),
+      const newUser = await customersService.create({
+        name,
+        phone,
+        barber_id: barber.id,
       });
-
-      const newUser = await res.json();
 
       setUsers((prev) => [...prev, newUser]);
 
@@ -82,13 +70,11 @@ export default function AddUser() {
   /////////////////////////////////////////////////////////
   const handleDelete = async (id: number) => {
     try {
-      await fetch(`http://192.168.1.4:3000/customers/${id}`, {
-        method: "DELETE",
-      });
+      await customersService.delete(id);
 
       setUsers((prev) => prev.filter((user) => user.id !== id));
     } catch (error) {
-      console.error("Error deleting customer:", error);
+      console.error("Error deleting customer217809:", error);
     }
   };
 

@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import { getSlots } from "../../api/slotsApi";
+import { getBarber } from "../../admin/utils/auth";
+import { customersService } from "../../api/customersService";
+import { slotsService } from "../../api/slotsService";
 
 type Booking = {
   id: number;
@@ -21,14 +25,6 @@ export default function ShowTime() {
   const [slots, setSlots] = useState<Slot[]>([]);
 
   /////////////////////////////////////////////////////////
-  //        GET BARBER FROM LOCAL STORAGE              //
-  /////////////////////////////////////////////////////////
-
-  const getBarber = () => {
-    return JSON.parse(localStorage.getItem("user") || "{}");
-  };
-
-  /////////////////////////////////////////////////////////
   //              FETCH BOOKINGS                        //
   /////////////////////////////////////////////////////////
 
@@ -39,11 +35,7 @@ export default function ShowTime() {
 
         if (!barber?.id) return;
 
-        const res = await fetch(
-          `http://192.168.1.4:3000/api/customers/${barber.id}`,
-        );
-
-        const data = await res.json();
+        const data = await customersService.get(barber.id);
 
         setBookings(data);
       } catch (error) {
@@ -64,12 +56,7 @@ export default function ShowTime() {
         const barber = getBarber();
 
         if (!barber?.id) return;
-
-        const res = await fetch(
-          `http://192.168.1.4:3000/api/slots/${barber.id}`,
-        );
-
-        const data = await res.json();
+        const data = await slotsService.get(barber.id);
 
         setSlots(data);
       } catch (error) {
