@@ -1,3 +1,4 @@
+import { getCustomers } from "../../api/customersApi";
 import "../../styles/home.css";
 import { useEffect, useState } from "react";
 
@@ -22,68 +23,37 @@ const Home = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
 
-  /////////////////////////////////////////////////////////
   const getBarber = () => {
     return JSON.parse(localStorage.getItem("user") || "{}");
   };
 
-  /////////////////////////////////////////////////////////
-  // CUSTOMERS
-  /////////////////////////////////////////////////////////
   useEffect(() => {
     const fetchCustomers = async () => {
-      try {
-        const barber = getBarber();
-        if (!barber?.id) return;
+      const barber = getBarber();
+      if (!barber?.id) return;
 
-        const res = await fetch(
-          `http://192.168.1.4:3000/customers/${barber.id}`,
-        );
-
-        if (!res.ok) throw new Error("Customers API failed");
-
-        const data = await res.json();
-        setCustomers(data);
-      } catch (error) {
-        console.error(error);
-      }
+      //use api/customersApi to fetch data & get all customers
+      const data = await getCustomers(barber.id);
+      setCustomers(data);
     };
 
     fetchCustomers();
   }, []);
 
-  /////////////////////////////////////////////////////////
-  // SLOTS
-  /////////////////////////////////////////////////////////
   useEffect(() => {
     const fetchSlots = async () => {
-      try {
-        const barber = getBarber();
-        if (!barber?.id) return;
+      const barber = getBarber();
+      if (!barber?.id) return;
 
-        const res = await fetch(
-          `http://192.168.1.4:3000/api/slots/${barber.id}`,
-        );
+      const res = await fetch(`http://192.168.1.4:3000/api/slots/${barber.id}`);
 
-        if (!res.ok) throw new Error("Slots API failed");
-
-        const data = await res.json();
-
-        // ❗ فقط المتاح
-        const available = data.filter((s: Slot) => !s.is_booked);
-
-        setSlots(available);
-      } catch (error) {
-        console.error(error);
-      }
+      const data = await res.json();
+      setSlots(data.filter((s: Slot) => !s.is_booked));
     };
 
     fetchSlots();
   }, []);
 
-  /////////////////////////////////////////////////////////
-  // TIMER
-  /////////////////////////////////////////////////////////
   useEffect(() => {
     if (customers.length === 0) return;
 
@@ -100,63 +70,47 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [customers]);
 
-  /////////////////////////////////////////////////////////
-  // BOOK SLOT
-  /////////////////////////////////////////////////////////
   const handleBook = async () => {
-    if (!selectedSlot || !name || !phone) {
-      alert("Fill all fields");
-      return;
-    }
+    if (!selectedSlot || !name || !phone) return alert("Fill all fields");
 
-    try {
-      const res = await fetch("http://192.168.1.4:3000/api/slots/book", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          slot_id: selectedSlot,
-          customer_name: name,
-          customer_phone: phone,
-        }),
-      });
+    const res = await fetch("http://192.168.1.4:3000/api/slots/book", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        slot_id: selectedSlot,
+        customer_name: name,
+        customer_phone: phone,
+      }),
+    });
 
-      if (!res.ok) {
-        alert("Booking failed");
-        return;
-      }
+    if (!res.ok) return alert("Booking failed");
 
-      alert("Booked successfully");
-
-      // تحديث UI
-      setSlots((prev) => prev.filter((s) => s.id !== selectedSlot));
-
-      setSelectedSlot(null);
-      setName("");
-      setPhone("");
-    } catch (error) {
-      console.error(error);
-    }
+    setSlots((p) => p.filter((s) => s.id !== selectedSlot));
+    setSelectedSlot(null);
+    setName("");
+    setPhone("");
   };
 
   const totalTime =
     customers.length > 0 ? (customers.length - 1) * 30 + timeLeft : 0;
 
-  /////////////////////////////////////////////////////////
-  // UI
-  /////////////////////////////////////////////////////////
   return (
     <div className="home">
-      <div className="content">
-        <h1>Welcome 👋</h1>
+      {/* ================= STATS ================= */}
+      <div className="stats">
+        <div className="card">
+          <h3>{customers.length}</h3>
+          <p>Customers</p>
+        </div>
 
-        <h3>Total waiting time: {totalTime} sec</h3>
-        <h3>Total customers: {customers.length}</h3>
+        <div className="card">
+          <h3>{totalTime}s</h3>
+          <p>Waiting Time</p>
+        </div>
+      </div>
 
-        <hr />
-
-        {/* ================= BOOKING ================= */}
+      {/* ================= BOOKING ================= */}
+      <div className="section">
         <h2>Book Appointment</h2>
 
         <input
@@ -171,49 +125,46 @@ const Home = () => {
           onChange={(e) => setPhone(e.target.value)}
         />
 
-        <h3>Available Slots</h3>
+        <div className="slots">
+          {slots.length === 0 ? (
+            <p className="empty">No available slots</p>
+          ) : (
+            slots.map((slot) => (
+              <button
+                key={slot.id}
+                className={`slot-btn ${
+                  selectedSlot === slot.id ? "active" : ""
+                }`}
+                onClick={() => setSelectedSlot(slot.id)}
+              >
+                {new Date(slot.slot_time).toLocaleString()}
+              </button>
+            ))
+          )}
+        </div>
 
-        {slots.length === 0 ? (
-          <p>No available slots</p>
-        ) : (
-          slots.map((slot) => (
-            <button
-              key={slot.id}
-              onClick={() => setSelectedSlot(slot.id)}
-              style={{
-                margin: "5px",
-                padding: "10px",
-                background: selectedSlot === slot.id ? "green" : "#222",
-                color: "white",
-              }}
-            >
-              {new Date(slot.slot_time).toLocaleString()}
-            </button>
-          ))
-        )}
-
-        <br />
-
-        <button onClick={handleBook} style={{ marginTop: "10px" }}>
+        <button className="book-btn" onClick={handleBook}>
           Book Now
         </button>
+      </div>
 
-        {/* ================= QUEUE ================= */}
-        <hr />
+      {/* ================= QUEUE ================= */}
+      <div className="section">
+        <h2>Queue</h2>
 
         {customers.length === 0 ? (
-          <p>No customers in queue</p>
+          <p className="empty">No customers in queue</p>
         ) : (
           customers.map((c, index) => (
-            <div key={c.id}>
-              <h4>{c.name}</h4>
-              <p>{c.phone}</p>
+            <div key={c.id} className="queue-card">
+              <div>
+                <h4>{c.name}</h4>
+                <p>{c.phone}</p>
+              </div>
 
-              {index === 0 ? (
-                <p>Time left: {timeLeft}s ⏱️</p>
-              ) : (
-                <p>Waiting...</p>
-              )}
+              <div className="time">
+                {index === 0 ? `${timeLeft}s ⏱️` : "Waiting"}
+              </div>
             </div>
           ))
         )}

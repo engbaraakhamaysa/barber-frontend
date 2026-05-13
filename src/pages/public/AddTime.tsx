@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import "../../styles/AddTime.css";
+import { getSlots } from "../../api/slotsApi";
+import { slotsService } from "../../api/slotsService";
+import { getBarber } from "../../admin/utils/auth";
 
 type Slot = {
   id: number;
@@ -16,13 +19,6 @@ export function AddTime() {
   const [duration, setDuration] = useState(30);
 
   /////////////////////////////////////////////////////////
-  // GET BARBER FROM LOCALSTORAGE
-  /////////////////////////////////////////////////////////
-  const getBarber = () => {
-    return JSON.parse(localStorage.getItem("user") || "{}");
-  };
-
-  /////////////////////////////////////////////////////////
   // FETCH SLOTS
   /////////////////////////////////////////////////////////
   useEffect(() => {
@@ -31,10 +27,7 @@ export function AddTime() {
       if (!barber?.id) return;
 
       try {
-        const res = await fetch(
-          `http://192.168.1.4:3000/api/slots/${barber.id}`,
-        );
-        const data = await res.json();
+        const data = await slotsService.get(barber.id);
         setSavedSlots(data);
       } catch (err) {
         console.error("Fetch error:", err);
@@ -91,18 +84,11 @@ export function AddTime() {
     if (!barber?.id || selectedSlots.length === 0) return;
 
     try {
-      await fetch("http://192.168.1.4:3000/api/slots", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          barber_id: barber.id,
-          slots: selectedSlots,
-        }),
+      await slotsService.create({
+        barber_id: barber.id,
+        slots: selectedSlots,
       });
-
-      const res = await fetch(`http://192.168.1.4:3000/api/slots/${barber.id}`);
-
-      const data = await res.json();
+      const data = await slotsService.get(barber.id);
       setSavedSlots(data);
 
       setGeneratedSlots([]);
@@ -117,9 +103,7 @@ export function AddTime() {
   /////////////////////////////////////////////////////////
   const handleDelete = async (id: number) => {
     try {
-      await fetch(`http://localhost:3000/api/slots/${id}`, {
-        method: "DELETE",
-      });
+      await slotsService.delete(id);
 
       setSavedSlots((prev) => prev.filter((s) => s.id !== id));
     } catch (err) {
