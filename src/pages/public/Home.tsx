@@ -1,11 +1,12 @@
 import "../../styles/home.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { slotsService } from "../../api/slotsService";
 import { useHomeData } from "../../hooks/useHomeData";
 import QueueCard from "../../components/Home/QueueCard";
 import SlotButton from "../../components/Home/SlotButton";
 import BookingForm from "../../components/Home/BookingForm";
+import { useQueueTimer } from "../../hooks/useQueueTimer";
 
 type Customer = {
   id: number;
@@ -19,11 +20,6 @@ export default function Home() {
   /////////////////////////////////////////////////////////
   const { customers, slots } = useHomeData();
 
-  /////////////////////////////////////////////////////////
-  // LOCAL UI STATE
-  /////////////////////////////////////////////////////////
-  const [timeLeft, setTimeLeft] = useState(30);
-
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
 
   const [name, setName] = useState("");
@@ -32,21 +28,7 @@ export default function Home() {
   /////////////////////////////////////////////////////////
   // TIMER
   /////////////////////////////////////////////////////////
-  useEffect(() => {
-    if (customers.length === 0) return;
-
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev === 1) {
-          return 30;
-        }
-
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [customers]);
+  const { timeLeft } = useQueueTimer(customers);
 
   /////////////////////////////////////////////////////////
   // BOOK SLOT
