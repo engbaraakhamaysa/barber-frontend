@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 
 import { slotsService } from "../../api/slotsService";
 import { useHomeData } from "../../hooks/useHomeData";
+import QueueCard from "../../components/Home/QueueCard";
+import SlotButton from "../../components/Home/SlotButton";
+import BookingForm from "../../components/Home/BookingForm";
 
 type Customer = {
   id: number;
@@ -97,44 +100,27 @@ export default function Home() {
       </div>
 
       {/* ================= BOOKING ================= */}
-      <div className="section">
-        <h2>Book Appointment</h2>
-
-        <input
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <input
-          placeholder="Phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-
-        <div className="slots">
-          {slots.length === 0 ? (
-            <p className="empty">No available slots</p>
-          ) : (
-            slots.map((slot: any) => (
-              <button
-                key={slot.id}
-                className={`slot-btn ${
-                  selectedSlot === slot.id ? "active" : ""
-                }`}
-                onClick={() => setSelectedSlot(slot.id)}
-              >
-                {new Date(slot.slot_time).toLocaleString()}
-              </button>
-            ))
-          )}
-        </div>
-
-        <button className="book-btn" onClick={handleBook}>
-          Book Now
-        </button>
-      </div>
-
+      <BookingForm
+        name={name}
+        phone={phone}
+        onNameChange={setName}
+        onPhoneChange={setPhone}
+        onBook={handleBook}
+      >
+        {slots.length === 0 ? (
+          <p className="empty">No available slots</p>
+        ) : (
+          slots.map((slot: any) => (
+            <SlotButton
+              key={slot.id}
+              id={slot.id}
+              slotTime={slot.slot_time}
+              isSelected={selectedSlot === slot.id}
+              onSelect={setSelectedSlot}
+            />
+          ))
+        )}
+      </BookingForm>
       {/* ================= QUEUE ================= */}
       <div className="section">
         <h2>Queue</h2>
@@ -143,16 +129,13 @@ export default function Home() {
           <p className="empty">No customers in queue</p>
         ) : (
           customers.map((customer: Customer, index: number) => (
-            <div key={customer.id} className="queue-card">
-              <div>
-                <h4>{customer.name}</h4>
-                <p>{customer.phone}</p>
-              </div>
-
-              <div className="time">
-                {index === 0 ? `${timeLeft}s ⏱️` : "Waiting"}
-              </div>
-            </div>
+            <QueueCard
+              key={customer.id}
+              name={customer.name}
+              phone={customer.phone}
+              isCurrent={index === 0}
+              timeLeft={timeLeft}
+            />
           ))
         )}
       </div>
