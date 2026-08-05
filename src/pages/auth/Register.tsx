@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { useRegister } from "../hooks/auth/useRegister";
+import { Link } from "react-router-dom";
 
 import "./styles/auth.css";
+import { useRegister } from "../../hooks/auth/useRegister";
 
 export default function Register() {
-  const navigate = useNavigate();
-
   const { submit, error, success, loading } = useRegister();
 
   const [name, setName] = useState("");
@@ -16,11 +13,11 @@ export default function Register() {
 
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    await submit(name, email, password);
-  };
+    submit(name, email, password);
+  }
 
   return (
     <div className="auth-page">
@@ -52,13 +49,13 @@ export default function Register() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button disabled={loading}>
+        <button type="submit" disabled={loading}>
           {loading ? "Loading..." : "Create Account"}
         </button>
 
-        <p className="auth-link" onClick={() => navigate("/login")}>
+        <Link className="auth-link" to="/login">
           Already have account?
-        </p>
+        </Link>
       </form>
     </div>
   );

@@ -1,38 +1,45 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuthContext } from "../../context/AuthContext";
+import { authService } from "../../services/auth.service";
 
 export function useLogin() {
   const navigate = useNavigate();
 
-  const { login } = useAuthContext();
-
-  const [error, setError] = useState("");
-
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const submit = async (email: string, password: string) => {
+  async function submit(email: string, password: string) {
     try {
-      setError("");
       setLoading(true);
+      setError(null);
 
-      await login({
+      if (!email.trim()) {
+        setError("Email is required");
+        return;
+      }
+
+      if (!password.trim()) {
+        setError("Password is required");
+        return;
+      }
+
+      await authService.login({
         email,
         password,
       });
 
-      navigate("/");
+      navigate("/users");
     } catch {
       setError("Invalid email or password");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return {
     submit,
-    error,
     loading,
+    error,
   };
 }

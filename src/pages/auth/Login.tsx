@@ -1,28 +1,24 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { useLogin } from "../hooks/auth/useLogin";
+import { Link } from "react-router-dom";
 
 import "./styles/auth.css";
+import { useLogin } from "../../hooks/auth/useLogin";
 
 export default function Login() {
-  const navigate = useNavigate();
-
   const { submit, error, loading } = useLogin();
 
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    await submit(email, password);
-  };
 
   return (
     <div className="auth-page">
-      <form className="auth-card" onSubmit={handleSubmit}>
+      <form
+        className="auth-card"
+        onSubmit={(e) => {
+          e.preventDefault();
+          submit(email, password);
+        }}
+      >
         <h1>Login</h1>
 
         {error && <p className="auth-error">{error}</p>}
@@ -41,11 +37,13 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button disabled={loading}>{loading ? "Loading..." : "Login"}</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Loading..." : "Login"}
+        </button>
 
-        <p className="auth-link" onClick={() => navigate("/register")}>
+        <Link className="auth-link" to="/register">
           Create account
-        </p>
+        </Link>
       </form>
     </div>
   );
