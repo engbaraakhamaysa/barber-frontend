@@ -1,10 +1,13 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "./styles/shops.css";
+
 import { useGetShop } from "../../hooks/shop/useGetShop";
 
 export default function ShopDetails() {
+  const navigate = useNavigate();
+
   const { id } = useParams();
 
   const { shop, loading, error, getShop } = useGetShop();
@@ -51,6 +54,10 @@ export default function ShopDetails() {
           <strong>Created:</strong>{" "}
           {new Date(shop.created_at).toLocaleDateString()}
         </p>
+
+        <button onClick={() => navigate(`/shops/${shop.id}/barbers`)}>
+          Manage Barbers
+        </button>
       </div>
     </div>
   );
