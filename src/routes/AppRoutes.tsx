@@ -8,6 +8,10 @@ import UserDetails from "../pages/users/UserDetails";
 import EditUser from "../pages/users/EditUser";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import ShopsList from "../pages/shop/ShopsList";
+import CreateShop from "../pages/shop/CreateShop";
+import EditShop from "../pages/shop/EditShop";
+import ShopDetails from "../pages/shop/ShopDetails";
 
 function Home() {
   return <h1>Home</h1>;
@@ -44,6 +48,14 @@ export default function AppRoutes() {
 
           <Route path="/profile" element={<Profile />} />
         </Route>
+
+        <Route path="/shops" element={<ShopsList />} />
+
+        <Route path="/shops/create" element={<CreateShop />} />
+
+        <Route path="/shops/:id/edit" element={<EditShop />} />
+
+        <Route path="/shops/:id" element={<ShopDetails />} />
       </Routes>
     </BrowserRouter>
   );
