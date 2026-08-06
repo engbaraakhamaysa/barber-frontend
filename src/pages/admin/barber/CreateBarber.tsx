@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useCreateBarber } from "../../hooks/barber/useCreateBarber";
+import { useCreateBarber } from "../../../hooks/barber/useCreateBarber";
 
 import "./styles/barbers.css";
 
@@ -27,15 +27,12 @@ export default function CreateBarber() {
 
     await createBarber({
       shop_id: Number(shopId),
-
       name,
-
       email,
-
       password,
     });
 
-    navigate(`/shops/${shopId}/barbers`);
+    navigate(`/admin/shops/${shopId}/barbers`);
   }
 
   return (

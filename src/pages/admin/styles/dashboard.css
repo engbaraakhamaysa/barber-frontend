@@ -1,0 +1,85 @@
+.admin-dashboard {
+  padding: 25px;
+}
+
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.dashboard-header p {
+  color: #666;
+}
+
+/* CARDS */
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: white;
+
+  padding: 25px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-card h3 {
+  margin-top: 0;
+}
+
+.dashboard-card span {
+  display: block;
+
+  font-size: 35px;
+
+  font-weight: bold;
+
+  margin: 15px 0;
+}
+
+.dashboard-card p {
+  color: #666;
+}
+
+/* QUICK ACTIONS */
+
+.dashboard-section {
+  margin-top: 35px;
+}
+
+.quick-actions {
+  display: flex;
+
+  gap: 15px;
+
+  flex-wrap: wrap;
+}
+
+.quick-actions button {
+  background: #2563eb;
+
+  color: white;
+
+  border: none;
+
+  padding: 12px 20px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+.quick-actions button:hover {
+  opacity: 0.9;
+}

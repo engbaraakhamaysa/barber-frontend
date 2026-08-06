@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { useCreateUser } from "../../hooks/users/useCreateUser";
-import { UserRole } from "../../types/users";
+import { UserRole } from "../../../types/users";
+import { useCreateUser } from "../../../hooks/users/useCreateUser";
 
 export default function CreateUser() {
   const navigate = useNavigate();

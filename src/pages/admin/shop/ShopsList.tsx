@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import "./styles/shops.css";
 
-import { useGetShops } from "../../hooks/shop/useGetShops";
-import { useDeleteShop } from "../../hooks/shop/useDeleteShop";
+import { useGetShops } from "../../../hooks/shop/useGetShops";
+import { useDeleteShop } from "../../../hooks/shop/useDeleteShop";
 
 export default function ShopsList() {
   const navigate = useNavigate();
@@ -46,7 +46,9 @@ export default function ShopsList() {
       <div className="shops-header">
         <h1>Shops</h1>
 
-        <button onClick={() => navigate("/shops/create")}>Add Shop</button>
+        <button onClick={() => navigate("/admin/shops/create")}>
+          Add Shop
+        </button>
       </div>
 
       <div className="shops-grid">
@@ -66,11 +68,11 @@ export default function ShopsList() {
             </p>
 
             <div className="shop-actions">
-              <button onClick={() => navigate(`/shops/${shop.id}`)}>
+              <button onClick={() => navigate(`/admin/shops/${shop.id}`)}>
                 View Shop
               </button>
 
-              <button onClick={() => navigate(`/shops/${shop.id}/edit`)}>
+              <button onClick={() => navigate(`/admin/shops/${shop.id}/edit`)}>
                 Edit
               </button>
 
