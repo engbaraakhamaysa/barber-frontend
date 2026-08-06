@@ -1,0 +1,151 @@
+.shop-page {
+  padding: 20px;
+}
+
+/* HEADER */
+
+.shops-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.shops-header h1 {
+  margin: 0;
+}
+
+/* BUTTONS */
+
+.shops-header button,
+.shop-actions button,
+.shop-form button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.shops-header button:hover,
+.shop-actions button:hover,
+.shop-form button:hover {
+  opacity: 0.9;
+}
+
+.shop-actions button.delete {
+  background: #dc2626;
+}
+
+/* GRID */
+
+.shops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+
+.shop-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.shop-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.shop-card p {
+  margin: 8px 0;
+}
+
+/* ACTIONS */
+
+.shop-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* STATUS */
+
+.status-active {
+  color: #16a34a;
+  font-weight: bold;
+}
+
+.status-inactive {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+/* FORM */
+
+.shop-form-page {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.shop-form {
+  width: 100%;
+  max-width: 450px;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.shop-form h1 {
+  margin-bottom: 20px;
+}
+
+.shop-form input,
+.shop-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.shop-form button {
+  width: 100%;
+}
+
+/* DETAILS */
+
+.shop-details-page {
+  padding: 30px;
+}
+
+.details-card {
+  max-width: 500px;
+}
+
+/* ERROR */
+
+.error {
+  color: #dc2626;
+  margin: 10px 0;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+  .shops-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .shop-actions {
+    flex-direction: column;
+  }
+}
