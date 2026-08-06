@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./styles/shops.css";
+
 import { useGetShops } from "../../hooks/shop/useGetShops";
 import { useDeleteShop } from "../../hooks/shop/useDeleteShop";
 
@@ -65,6 +66,10 @@ export default function ShopsList() {
             </p>
 
             <div className="shop-actions">
+              <button onClick={() => navigate(`/shops/${shop.id}`)}>
+                View Shop
+              </button>
+
               <button onClick={() => navigate(`/shops/${shop.id}/edit`)}>
                 Edit
               </button>
