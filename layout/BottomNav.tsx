@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { useAuthContext } from "../../context/AuthContext";
+import { useAuthContext } from "../src/context/AuthContext";
 
 import "../styles/bottom-nav.css";
 

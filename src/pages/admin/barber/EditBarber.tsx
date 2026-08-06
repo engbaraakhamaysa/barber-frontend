@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGetBarber } from "../../hooks/barber/useGetBarber";
-import { useUpdateBarber } from "../../hooks/barber/useUpdateBarber";
+import { useGetBarber } from "../../../hooks/barber/useGetBarber";
+import { useUpdateBarber } from "../../../hooks/barber/useUpdateBarber";
 
 import "./styles/barbers.css";
 
@@ -65,7 +65,7 @@ export default function EditBarber() {
       is_active: isActive,
     });
 
-    navigate(`/shops/${shopId}/barbers/${id}`);
+    navigate(`/admin/shops/${shopId}/barbers/${id}`);
   }
 
   if (getLoading) {

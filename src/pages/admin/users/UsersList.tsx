@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useGetUsers } from "../../hooks/users/useGetUsers";
-import { useDeleteUser } from "../../hooks/users/useDeleteUser";
+import { useGetUsers } from "../../../hooks/users/useGetUsers";
+import { useDeleteUser } from "../../../hooks/users/useDeleteUser";
 
 import "./styles/users.css";
 
@@ -46,7 +46,9 @@ export default function UsersList() {
       <div className="users-header">
         <h1>Users</h1>
 
-        <button onClick={() => navigate("/users/create")}>Add User</button>
+        <button onClick={() => navigate("/admin/users/create")}>
+          Add User
+        </button>
       </div>
 
       <div className="users-grid">
@@ -68,7 +70,7 @@ export default function UsersList() {
             </p>
 
             <div className="user-actions">
-              <button onClick={() => navigate(`/users/${user.id}/edit`)}>
+              <button onClick={() => navigate(`/admin/users/${user.id}/edit`)}>
                 Edit
               </button>
 

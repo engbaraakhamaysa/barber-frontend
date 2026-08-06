@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGetBarber } from "../../hooks/barber/useGetBarber";
+import { useGetBarber } from "../../../hooks/barber/useGetBarber";
 
 import "./styles/barbers.css";
 
@@ -60,12 +60,14 @@ export default function BarberDetails() {
         </p>
 
         <div className="barber-actions">
-          <button onClick={() => navigate(`/shops/${shopId}/barbers`)}>
+          <button onClick={() => navigate(`/admin/shops/${shopId}/barbers`)}>
             Back To Barbers
           </button>
 
           <button
-            onClick={() => navigate(`/shops/${shopId}/barbers/${id}/edit`)}
+            onClick={() =>
+              navigate(`/admin/shops/${shopId}/barbers/${id}/edit`)
+            }
           >
             Edit
           </button>
