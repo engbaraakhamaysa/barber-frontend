@@ -25,6 +25,16 @@ import CreateBarber from "../pages/admin/barber/CreateBarber";
 import EditBarber from "../pages/admin/barber/EditBarber";
 import BarberDetails from "../pages/admin/barber/BarberDetails";
 
+import BarberLayout from "../layouts/BarberLayout";
+
+import DashboardBarber from "../pages/barber/Dashboard";
+import Customers from "../pages/barber/Customers";
+import Bookings from "../pages/barber/Bookings";
+
+import CreateCustomer from "../pages/barber/CreateCustomer";
+import EditCustomer from "../pages/barber/EditCustomer";
+import Queue from "../pages/barber/Queue";
+
 function Home() {
   return <h1>Home</h1>;
 }
@@ -42,6 +52,17 @@ export default function AppRoutes() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />
+
+        <Route path="/barber" element={<BarberLayout />}>
+          <Route index element={<DashboardBarber />} />
+
+          <Route path="customers" element={<Customers />} />
+
+          <Route path="customers/create" element={<CreateCustomer />} />
+          <Route path="customers/:id/edit" element={<EditCustomer />} />
+          <Route path="/barber/queue" element={<Queue />} />
+          <Route path="bookings" element={<Bookings />} />
+        </Route>
 
         {/* ADMIN PANEL */}
 
