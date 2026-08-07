@@ -1,0 +1,81 @@
+.queue-page {
+  padding: 20px;
+  min-height: 100vh;
+  background: #f7f7f7;
+}
+
+.queue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.queue-header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.queue-header button {
+  background: #111;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.queue-header button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.current-customer {
+  background: #222;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.queue-card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.queue-card h3 {
+  margin-top: 0;
+}
+
+.queue-card p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.queue-card button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.queue-card button:hover {
+  opacity: 0.9;
+}
+
+.error {
+  color: red;
+  padding: 20px;
+}

@@ -1,0 +1,62 @@
+.customers-page {
+  padding: 16px;
+  min-height: 100vh;
+  background: #f8f8f8;
+}
+
+/* Header */
+
+.customers-header {
+  margin-bottom: 20px;
+}
+
+.customers-header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Customers list */
+
+.customers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Customer Card */
+
+.customer-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.customer-card h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.customer-card p {
+  margin: 6px 0;
+
+  color: #555;
+  font-size: 14px;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .customers-page {
+    padding: 12px;
+  }
+
+  .customers-header h1 {
+    font-size: 22px;
+  }
+
+  .customer-card {
+    border-radius: 14px;
+  }
+}
