@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGetBarbersByShop } from "../../../hooks/barber/useGetBarbersByShop";
-import { useDeleteBarber } from "../../../hooks/barber/useDeleteBarber";
+import { useGetBarbersByShop } from "../../../features/barber/hooks/useGetBarbersByShop";
+import { useDeleteBarber } from "../../../features/barber/hooks/useDeleteBarber";
 
 import "./styles/barbers.css";
 

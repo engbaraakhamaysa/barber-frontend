@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGetBarber } from "../../../hooks/barber/useGetBarber";
-import { useUpdateBarber } from "../../../hooks/barber/useUpdateBarber";
+import { useGetBarber } from "../../../features/barber/hooks/useGetBarber";
+import { useUpdateBarber } from "../../../features/barber/hooks/useUpdateBarber";
 
 import "./styles/barbers.css";
 

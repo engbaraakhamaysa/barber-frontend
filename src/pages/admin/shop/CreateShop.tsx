@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./styles/shops.css";
-import { useCreateShop } from "../../../hooks/shop/useCreateShop";
+import { useCreateShop } from "../../../features/shop/hooks/useCreateShop";
 
 export default function CreateShop() {
   const navigate = useNavigate();

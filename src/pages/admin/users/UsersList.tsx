@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useGetUsers } from "../../../hooks/users/useGetUsers";
-import { useDeleteUser } from "../../../hooks/users/useDeleteUser";
-
 import "./styles/users.css";
+
+import { useDeleteUser } from "../../../features/users/hooks/useDeleteUser";
+import { useGetUsers } from "../../../features/users/hooks/useGetUsers";
 
 export default function UsersList() {
   const navigate = useNavigate();

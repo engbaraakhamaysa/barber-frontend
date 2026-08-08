@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGetBarber } from "../../../hooks/barber/useGetBarber";
+import { useGetBarber } from "../../../features/barber/hooks/useGetBarber";
 
 import "./styles/barbers.css";
 
