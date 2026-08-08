@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGetCustomer } from "../../hooks/customer/useGetCustomer";
-import { useUpdateCustomer } from "../../hooks/customer/useUpdateCustomer";
+import { useGetCustomer } from "../../features/customer/hooks/useGetCustomer";
+import { useUpdateCustomer } from "../../features/customer/hooks/useUpdateCustomer";
 
 import "./styles/customers.css";
 

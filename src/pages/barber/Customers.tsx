@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useGetCustomers } from "../../hooks/customer/useGetCustomers";
-import { useDeleteCustomer } from "../../hooks/customer/useDeleteCustomer";
+import { useGetCustomers } from "../../features/customer/hooks/useGetCustomers";
+import { useDeleteCustomer } from "../../features/customer/hooks/useDeleteCustomer";
 
 import "./styles/customers.css";
 

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { useGetQueueByBarber } from "../../hooks/queue/useGetQueueByBarber";
-import { useUpdateQueue } from "../../hooks/queue/useUpdateQueue";
-import { useGetNextWaiting } from "../../hooks/queue/useGetNextWaiting";
+import { useGetQueueByBarber } from "../../features/queue/hooks/useGetQueueByBarber";
+import { useUpdateQueue } from "../../features/queue/hooks/useUpdateQueue";
+import { useGetNextWaiting } from "../../features/queue/hooks/useGetNextWaiting";
 
-import type { QueueEntry } from "../../types/queue";
+import type { QueueEntry } from "../../features/queue/queue";
 
 import "./styles/queue.css";
 

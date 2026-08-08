@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGetUser } from "../../../hooks/users/useGetUser";
-import { useUpdateUser } from "../../../hooks/users/useUpdateUser";
-import { UserRole } from "../../../types/users";
+import { useGetUser } from "../../../features/users/hooks/useGetUser";
+import { useUpdateUser } from "../../../features/users/hooks/useUpdateUser";
+import { UserRole } from "../../../features/users/users.types";
 
 export default function EditUser() {
   const navigate = useNavigate();

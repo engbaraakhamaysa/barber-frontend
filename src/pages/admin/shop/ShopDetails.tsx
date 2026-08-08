@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import "./styles/shops.css";
 
-import { useGetShop } from "../../../hooks/shop/useGetShop";
+import { useGetShop } from "../../../features/shop/hooks/useGetShop";
 
 export default function ShopDetails() {
   const navigate = useNavigate();

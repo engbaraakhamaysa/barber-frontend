@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import "./styles/auth.css";
-import { useLogin } from "../../hooks/auth/useLogin";
+import "./auth.css";
+import { useLogin } from "../../features/auth/hooks/useLogin";
 
 export default function Login() {
   const { submit, error, loading } = useLogin();

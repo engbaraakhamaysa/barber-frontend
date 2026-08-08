@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import "./styles/shops.css";
-import { useGetShop } from "../../../hooks/shop/useGetShop";
-import { useUpdateShop } from "../../../hooks/shop/useUpdateShop";
+import { useGetShop } from "../../../features/shop/hooks/useGetShop";
+import { useUpdateShop } from "../../../features/shop/hooks/useUpdateShop";
 
 export default function EditShop() {
   const navigate = useNavigate();

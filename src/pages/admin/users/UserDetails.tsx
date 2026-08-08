@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useGetUser } from "../../../hooks/users/useGetUser";
+import { useGetUser } from "../../../features/users/hooks/useGetUser";
 
 export default function UserDetails() {
   const { id } = useParams();

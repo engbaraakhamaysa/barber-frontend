@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useCreateCustomer } from "../../hooks/customer/useCreateCustomer";
+import { useCreateCustomer } from "../../features/customer/hooks/useCreateCustomer";
 
 import "./styles/customers.css";
 
