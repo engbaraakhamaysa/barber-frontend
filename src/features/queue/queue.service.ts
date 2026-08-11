@@ -1,4 +1,5 @@
 import Axios from "../../api/axios";
+
 import type { QueueEntry, JoinQueueRequest, UpdateQueueRequest } from "./queue";
 
 export const queueService = {
@@ -6,6 +7,7 @@ export const queueService = {
   // JOIN QUEUE
   // Add customer to barber queue
   ///////////////////////////////////////////
+
   async join(data: JoinQueueRequest): Promise<QueueEntry> {
     const response = await Axios.post<QueueEntry>("/queue", data);
 
@@ -15,6 +17,7 @@ export const queueService = {
   ///////////////////////////////////////////
   // GET ALL QUEUE
   ///////////////////////////////////////////
+
   async getAll(): Promise<QueueEntry[]> {
     const response = await Axios.get<QueueEntry[]>("/queue");
 
@@ -25,6 +28,7 @@ export const queueService = {
   // GET QUEUE BY BARBER
   // Get active customers for barber
   ///////////////////////////////////////////
+
   async getByBarberId(barberId: number): Promise<QueueEntry[]> {
     const response = await Axios.get<QueueEntry[]>(`/queue/barber/${barberId}`);
 
@@ -32,20 +36,9 @@ export const queueService = {
   },
 
   ///////////////////////////////////////////
-  // GET NEXT WAITING CUSTOMER
-  // First customer in FIFO queue
-  ///////////////////////////////////////////
-  async getNextWaiting(barberId: number): Promise<QueueEntry> {
-    const response = await Axios.get<QueueEntry>(
-      `/queue/barber/${barberId}/next`,
-    );
-
-    return response.data;
-  },
-
-  ///////////////////////////////////////////
   // GET CUSTOMER ACTIVE QUEUE
   ///////////////////////////////////////////
+
   async getCustomerQueue(customerId: number): Promise<QueueEntry> {
     const response = await Axios.get<QueueEntry>(
       `/queue/customer/${customerId}`,
@@ -57,6 +50,7 @@ export const queueService = {
   ///////////////////////////////////////////
   // GET QUEUE BY ID
   ///////////////////////////////////////////
+
   async get(id: number): Promise<QueueEntry> {
     const response = await Axios.get<QueueEntry>(`/queue/${id}`);
 
@@ -64,18 +58,30 @@ export const queueService = {
   },
 
   ///////////////////////////////////////////
-  // UPDATE QUEUE STATUS
+  // COMPLETE CURRENT CUSTOMER
+  // Complete current customer and start next
   ///////////////////////////////////////////
-  async update(id: number, data: UpdateQueueRequest): Promise<QueueEntry> {
-    const response = await Axios.put<QueueEntry>(`/queue/${id}`, data);
+
+  async complete(id: number): Promise<{
+    message: string;
+    nextCustomer: QueueEntry | null;
+  }> {
+    const response = await Axios.post<{
+      message: string;
+      nextCustomer: QueueEntry | null;
+    }>(`/queue/${id}/complete`);
 
     return response.data;
   },
 
   ///////////////////////////////////////////
-  // DELETE QUEUE ENTRY
+  // UPDATE QUEUE
+  // Used for other queue updates
   ///////////////////////////////////////////
-  async delete(id: number): Promise<void> {
-    await Axios.delete(`/queue/${id}`);
+
+  async update(id: number, data: UpdateQueueRequest): Promise<QueueEntry> {
+    const response = await Axios.put<QueueEntry>(`/queue/${id}`, data);
+
+    return response.data;
   },
 };

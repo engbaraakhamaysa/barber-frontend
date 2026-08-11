@@ -1,0 +1,131 @@
+/* .app-header {
+  width: 100%;
+  min-height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  flex-shrink: 0;
+}
+
+.app-logo {
+  color: #111827;
+
+  text-decoration: none;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.app-nav a {
+  color: #4b5563;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  transition: color 0.2s ease;
+}
+
+.app-nav a:hover {
+  color: #111827;
+}
+
+@media (max-width: 600px) {
+  .app-header {
+    min-height: 60px;
+    padding: 0 16px;
+  }
+
+  .app-logo {
+    font-size: 19px;
+  }
+
+  .app-nav {
+    gap: 12px;
+  }
+
+  .app-nav a {
+    font-size: 13px;
+  }
+} */
+
+.app-header {
+  width: 100%;
+  min-height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 16px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+
+  flex-shrink: 0;
+}
+
+.app-logo {
+  color: #111827;
+
+  text-decoration: none;
+
+  font-size: 19px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.app-nav {
+  display: none;
+}
+
+/* Tablet and Desktop */
+@media (min-width: 768px) {
+  .app-header {
+    min-height: 64px;
+    padding: 0 24px;
+  }
+
+  .app-logo {
+    font-size: 22px;
+  }
+
+  .app-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .app-nav a {
+    color: #4b5563;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: color 0.2s ease;
+  }
+
+  .app-nav a:hover {
+    color: #111827;
+  }
+}

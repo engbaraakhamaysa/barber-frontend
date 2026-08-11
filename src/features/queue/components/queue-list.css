@@ -1,0 +1,164 @@
+.queue-list {
+  width: 100%;
+}
+
+.queue-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+}
+
+.queue-list-header h2 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.queue-list-header p {
+  margin: 4px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+.queue-list-count {
+  min-width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 8px;
+
+  border-radius: 999px;
+
+  background: #e5e7eb;
+
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.queue-list-items {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.queue-list-state {
+  min-height: 140px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.queue-list-state p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.queue-list-spinner {
+  width: 24px;
+  height: 24px;
+
+  border: 3px solid #e5e7eb;
+  border-top-color: #2563eb;
+
+  border-radius: 50%;
+
+  animation: queue-spinner 0.8s linear infinite;
+}
+
+.queue-list-empty {
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px dashed #d1d5db;
+  border-radius: 14px;
+}
+
+.queue-list-empty-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 50%;
+
+  background: #eff6ff;
+
+  font-size: 22px;
+}
+
+.queue-list-empty h3 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.queue-list-empty p {
+  max-width: 260px;
+
+  margin: 6px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@keyframes queue-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tablet and Desktop */
+
+@media (min-width: 768px) {
+  .queue-list-header h2 {
+    font-size: 22px;
+  }
+
+  .queue-list-items {
+    gap: 12px;
+  }
+}

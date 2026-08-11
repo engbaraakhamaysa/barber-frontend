@@ -1,140 +1,254 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { useAuthContext } from "../../app/providers/AuthProvider";
+
+import QueueForm from "../../features/queue/components/QueueForm";
+import QueueList from "../../features/queue/components/QueueList";
 
 import { useGetQueueByBarber } from "../../features/queue/hooks/useGetQueueByBarber";
-import { useUpdateQueue } from "../../features/queue/hooks/useUpdateQueue";
-import { useGetNextWaiting } from "../../features/queue/hooks/useGetNextWaiting";
+import { useQueueActions } from "../../features/queue/hooks/useQueueActions";
+import { useQueueTimer } from "../../features/queue/hooks/useQueueTimer";
 
-import type { QueueEntry } from "../../features/queue/queue";
-
-import "./styles/queue.css";
+import "./queue.css";
 
 export default function Queue() {
-  // مؤقتاً
-  // لاحقاً من Auth Context
-  const barberId = 1;
+  const { user } = useAuthContext();
 
-  const { queue, loading, error, getQueueByBarber } = useGetQueueByBarber();
+  const {
+    queue,
+    loading: queueLoading,
+    error: queueError,
+    getQueueByBarber,
+  } = useGetQueueByBarber();
 
-  const { updateQueue, loading: updateLoading } = useUpdateQueue();
+  const {
+    finishCustomer,
+    removeCustomer,
+    updating,
+    error: actionError,
+    actionSuccess,
+    clearSuccess,
+  } = useQueueActions();
 
-  const { getNextWaiting } = useGetNextWaiting();
+  const firstCustomer = queue[0];
 
-  const [currentCustomer, setCurrentCustomer] = useState<QueueEntry | null>(
-    null,
+  ///////////////////////////////////////////
+  // SERVICE TIMER
+  ///////////////////////////////////////////
+
+  const { currentTime, serviceCompleted } = useQueueTimer(
+    firstCustomer?.id,
+    firstCustomer?.started_at,
   );
 
-  useEffect(() => {
-    getQueueByBarber(barberId);
-  }, []);
+  const [refreshing, setRefreshing] = useState(false);
 
-  async function handleNext() {
-    const customer = await getNextWaiting(barberId);
+  ///////////////////////////////////////////
+  // PREVENT DUPLICATE COMPLETE REQUEST
+  ///////////////////////////////////////////
+
+  const completingCustomerId = useRef<number | null>(null);
+
+  ///////////////////////////////////////////
+  // GET BARBER QUEUE
+  ///////////////////////////////////////////
+
+  async function refreshQueue() {
+    if (!user) {
+      return;
+    }
+
+    setRefreshing(true);
+
+    try {
+      await getQueueByBarber(user.id);
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
+  ///////////////////////////////////////////
+  // INITIAL QUEUE LOAD
+  ///////////////////////////////////////////
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    getQueueByBarber(user.id);
+  }, [user]);
+
+  ///////////////////////////////////////////
+  // AUTO COMPLETE CURRENT CUSTOMER
+  ///////////////////////////////////////////
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    if (!firstCustomer) {
+      return;
+    }
+
+    const barberId = user.id;
+
+    if (firstCustomer.status !== "in_service") {
+      return;
+    }
+
+    if (!firstCustomer.started_at) {
+      return;
+    }
+
+    if (!serviceCompleted) {
+      return;
+    }
+
+    if (completingCustomerId.current === firstCustomer.id) {
+      return;
+    }
+
+    completingCustomerId.current = firstCustomer.id;
+
+    async function completeCurrentCustomer() {
+      const success = await finishCustomer(firstCustomer.id);
+
+      if (!success) {
+        completingCustomerId.current = null;
+        return;
+      }
+
+      await getQueueByBarber(barberId);
+
+      completingCustomerId.current = null;
+    }
+
+    completeCurrentCustomer();
+  }, [user, firstCustomer, serviceCompleted, finishCustomer]);
+
+  ///////////////////////////////////////////
+  // FINISH CURRENT CUSTOMER EARLY
+  ///////////////////////////////////////////
+
+  async function handleFinishCustomer() {
+    if (!user || !firstCustomer) {
+      return;
+    }
+
+    if (firstCustomer.status !== "in_service") {
+      return;
+    }
+
+    if (completingCustomerId.current === firstCustomer.id) {
+      return;
+    }
+
+    completingCustomerId.current = firstCustomer.id;
+
+    const success = await finishCustomer(firstCustomer.id);
+
+    if (!success) {
+      completingCustomerId.current = null;
+      return;
+    }
+
+    await getQueueByBarber(user.id);
+
+    completingCustomerId.current = null;
+  }
+
+  ///////////////////////////////////////////
+  // REMOVE CUSTOMER
+  ///////////////////////////////////////////
+
+  async function handleRemoveCustomer(id: number) {
+    if (!user) {
+      return;
+    }
+
+    const customer = queue.find((entry) => entry.id === id);
 
     if (!customer) {
       return;
     }
 
-    const updated = await updateQueue(customer.id, {
-      status: "called",
-    });
-
-    if (updated) {
-      setCurrentCustomer(updated);
-
-      getQueueByBarber(barberId);
+    if (customer.status !== "waiting") {
+      return;
     }
-  }
 
-  async function handleStart(id: number) {
-    const updated = await updateQueue(id, {
-      status: "in_service",
-    });
+    const success = await removeCustomer(id);
 
-    if (updated) {
-      setCurrentCustomer(updated);
-
-      getQueueByBarber(barberId);
+    if (!success) {
+      return;
     }
+
+    await getQueueByBarber(user.id);
   }
 
-  async function handleComplete(id: number) {
-    const updated = await updateQueue(id, {
-      status: "completed",
-    });
+  ///////////////////////////////////////////
+  // CUSTOMER ADDED
+  ///////////////////////////////////////////
 
-    if (updated) {
-      setCurrentCustomer(null);
-
-      getQueueByBarber(barberId);
-    }
-  }
-
-  if (loading) {
-    return <p>Loading queue...</p>;
-  }
-
-  if (error) {
-    return <p className="error">{error}</p>;
+  function handleCustomerAdded() {
+    clearSuccess();
+    refreshQueue();
   }
 
   return (
     <div className="queue-page">
-      <div className="queue-header">
-        <h1>Customer Queue</h1>
+      <header className="queue-page-header">
+        <div>
+          <h1>Queue</h1>
 
-        <button onClick={handleNext} disabled={updateLoading}>
-          Next Customer
+          <p>Manage your customers and current service.</p>
+        </div>
+
+        <button
+          className="queue-refresh-button"
+          type="button"
+          onClick={refreshQueue}
+          disabled={refreshing || queueLoading}
+          aria-label="Refresh queue"
+        >
+          {refreshing ? "Refreshing..." : "Refresh"}
         </button>
-      </div>
+      </header>
 
-      {currentCustomer && (
-        <div className="current-customer">
-          <h3>Current Customer</h3>
+      {(queueError || actionError || actionSuccess) && (
+        <div className="queue-messages">
+          {queueError && (
+            <div className="queue-message queue-message-error">
+              {queueError}
+            </div>
+          )}
 
-          <p>
-            Customer ID:
-            {currentCustomer.customer_id}
-          </p>
+          {actionError && (
+            <div className="queue-message queue-message-error">
+              {actionError}
+            </div>
+          )}
 
-          <p>
-            Status:
-            {currentCustomer.status}
-          </p>
+          {actionSuccess && (
+            <div className="queue-message queue-message-success">
+              {actionSuccess}
+            </div>
+          )}
         </div>
       )}
 
-      <div className="queue-list">
-        {queue.length === 0 ? (
-          <p>No customers waiting</p>
-        ) : (
-          queue.map((item) => (
-            <div className="queue-card" key={item.id}>
-              <h3>Customer #{item.customer_id}</h3>
+      <div className="queue-page-content">
+        <QueueList
+          queue={queue}
+          loading={queueLoading}
+          currentTime={currentTime}
+          updating={updating}
+          onFinish={handleFinishCustomer}
+          onRemove={handleRemoveCustomer}
+        />
 
-              <p>
-                Status:
-                {item.status}
-              </p>
-
-              <p>
-                Joined:
-                {new Date(item.joined_at).toLocaleTimeString()}
-              </p>
-
-              {item.status === "called" && (
-                <button onClick={() => handleStart(item.id)}>
-                  Start Service
-                </button>
-              )}
-
-              {item.status === "in_service" && (
-                <button onClick={() => handleComplete(item.id)}>
-                  Complete
-                </button>
-              )}
-            </div>
-          ))
-        )}
+        <QueueForm barberId={user?.id ?? 0} onSuccess={handleCustomerAdded} />
       </div>
     </div>
   );

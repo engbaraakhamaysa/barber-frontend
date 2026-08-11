@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 
-import "../styles/auth-header.css";
+import "./header.css";
 
-export default function AuthHeader() {
+export default function Header() {
   return (
-    <header className="auth-header">
-      <Link to="/" className="auth-logo">
+    <header className="app-header">
+      <Link to="/" className="app-logo">
         ✂ Barber App
       </Link>
 
-      <nav className="auth-nav">
+      <nav className="app-nav">
         <Link to="/">Home</Link>
         <Link to="/login">Login</Link>
         <Link to="/register">Register</Link>

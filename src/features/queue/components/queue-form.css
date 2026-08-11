@@ -1,0 +1,161 @@
+.queue-form {
+  width: 100%;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  padding: 18px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.queue-form-header {
+  margin-bottom: 18px;
+}
+
+.queue-form-header h2 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.queue-form-header p {
+  margin: 5px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+.queue-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.queue-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.queue-form-field label {
+  color: #374151;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.queue-form-field input {
+  width: 100%;
+  min-height: 48px;
+
+  padding: 0 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  font-size: 16px;
+
+  outline: none;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.queue-form-field input::placeholder {
+  color: #9ca3af;
+}
+
+.queue-form-field input:focus {
+  border-color: #2563eb;
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.queue-form-submit {
+  width: 100%;
+  min-height: 48px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.queue-form-submit:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.queue-form-submit:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.queue-form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.queue-form-error {
+  margin: 0;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  background: #fef2f2;
+  color: #dc2626;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Tablet and Desktop */
+
+@media (min-width: 768px) {
+  .queue-form {
+    padding: 24px;
+  }
+
+  .queue-form-body {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr auto;
+
+    align-items: end;
+
+    gap: 16px;
+  }
+
+  .queue-form-submit {
+    width: auto;
+
+    padding: 0 24px;
+  }
+
+  .queue-form-error {
+    grid-column: 1 / -1;
+  }
+}

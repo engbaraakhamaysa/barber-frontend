@@ -7,21 +7,14 @@ export type QueueStatus =
 
 export interface QueueEntry {
   id: number;
-
   barber_id: number;
-
   customer_id: number;
-
+  customer_name: string;
   status: QueueStatus;
-
   joined_at: string;
-
   called_at: string | null;
-
   started_at: string | null;
-
   completed_at: string | null;
-
   cancelled_at: string | null;
 }
 

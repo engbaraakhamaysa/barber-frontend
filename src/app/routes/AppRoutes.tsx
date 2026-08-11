@@ -1,8 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import MainLayout from "../../layouts/MainLayout";
 import AdminLayout from "../../layouts/AdminLayout";
-import BarberLayout from "../../layouts/BarberLayout";
 
 import ProtectedRoute from "./ProtectedRoute";
 import RoleBasedRoute from "./RoleBasedRoute";
@@ -30,10 +28,7 @@ import Bookings from "../../pages/barber/Bookings";
 import CreateCustomer from "../../pages/barber/CreateCustomer";
 import EditCustomer from "../../pages/barber/EditCustomer";
 import Queue from "../../pages/barber/Queue";
-
-function Profile() {
-  return <div>Profile</div>;
-}
+import MainLayout from "../../layouts/MainLayout";
 
 export default function AppRoutes() {
   return (
@@ -45,7 +40,7 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <RoleBasedRoute allowedRoles={["barber"]}>
-              <BarberLayout />
+              <MainLayout />
             </RoleBasedRoute>
           </ProtectedRoute>
         }
@@ -106,20 +101,6 @@ export default function AppRoutes() {
         <Route path="shops/:shopId/barbers/:id" element={<BarberDetails />} />
 
         <Route path="shops/:shopId/barbers/:id/edit" element={<EditBarber />} />
-      </Route>
-
-      {/* NORMAL USER */}
-
-      <Route
-        element={
-          <ProtectedRoute>
-            <RoleBasedRoute allowedRoles={["user"]}>
-              <MainLayout />
-            </RoleBasedRoute>
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
   );
