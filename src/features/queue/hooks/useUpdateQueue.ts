@@ -5,21 +5,19 @@ import { queueService } from "../queue.service";
 import type { QueueEntry, UpdateQueueRequest } from "../queue";
 
 export function useUpdateQueue() {
-  const [queueEntry, setQueueEntry] = useState<QueueEntry | null>(null);
-
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
 
-  async function updateQueue(id: number, data: UpdateQueueRequest) {
+  async function updateQueue(
+    id: number,
+    data: UpdateQueueRequest,
+  ): Promise<QueueEntry | null> {
     try {
       setLoading(true);
-
       setError(null);
 
       const response = await queueService.update(id, data);
-
-      setQueueEntry(response);
 
       return response;
     } catch (err: any) {
@@ -34,7 +32,6 @@ export function useUpdateQueue() {
   }
 
   return {
-    queueEntry,
     loading,
     error,
     updateQueue,

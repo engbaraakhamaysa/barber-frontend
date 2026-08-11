@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
 
-import "../styles/bottom-nav.css";
+import "./bottom-nav.css";
+
 export default function BottomNav() {
   return (
     <nav className="bottom-nav">
-      <NavLink to="/barber">Home</NavLink>
+      <NavLink to="/">Home</NavLink>
 
       <NavLink to="/barber/customers">Customers</NavLink>
 

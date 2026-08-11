@@ -1,5 +1,9 @@
 .auth-page {
   width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .auth-card {
@@ -44,7 +48,6 @@
 
 .auth-card input:focus {
   outline: none;
-
   border-color: #2563eb;
 }
 
