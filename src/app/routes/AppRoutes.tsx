@@ -24,11 +24,12 @@ import BarberDetails from "../../pages/admin/barber/BarberDetails";
 
 import DashboardBarber from "../../pages/barber/Dashboard";
 import Customers from "../../pages/barber/Customers";
-import Bookings from "../../pages/barber/Bookings";
+
 import CreateCustomer from "../../pages/barber/CreateCustomer";
 import EditCustomer from "../../pages/barber/EditCustomer";
 import Queue from "../../pages/barber/Queue";
 import MainLayout from "../../layouts/MainLayout";
+import Booking from "../../pages/barber/Booking";
 
 export default function AppRoutes() {
   return (
@@ -55,7 +56,7 @@ export default function AppRoutes() {
 
         <Route path="queue" element={<Queue />} />
 
-        <Route path="bookings" element={<Bookings />} />
+        <Route path="bookings" element={<Booking />} />
       </Route>
 
       {/* ADMIN PANEL */}
