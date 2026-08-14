@@ -10,15 +10,15 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    submit(email, password);
+  }
+
   return (
     <div className="auth-page">
-      <form
-        className="auth-card"
-        onSubmit={(e) => {
-          e.preventDefault();
-          submit(email, password);
-        }}
-      >
+      <form className="auth-card" onSubmit={handleSubmit}>
         <h1>Login</h1>
 
         {error && <p className="auth-error">{error}</p>}

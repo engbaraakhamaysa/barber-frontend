@@ -4,7 +4,7 @@ import "./header.css";
 import { useAuthContext } from "../../app/providers/AuthProvider";
 
 export default function Header() {
-  const { isAuthenticated, logout, user } = useAuthContext();
+  const { isAuthenticated, logout } = useAuthContext();
 
   return (
     <header className="app-header">
