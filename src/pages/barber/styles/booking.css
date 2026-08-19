@@ -1,0 +1,28 @@
+main {
+  padding: 16px;
+  background-color: white;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.booking {
+  width: 100%;
+  padding: 16px;
+  background-color: #f8f8f8;
+  border-radius: 12px;
+}
+
+.section-today {
+  margin-top: 32px;
+}
+
+article {
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}

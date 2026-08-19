@@ -4,6 +4,8 @@ import BookingForm from "../../features/booking/components/BookingForm";
 
 import { useBarberBookings } from "../../features/booking/hooks/useBarberBookings";
 
+import "./styles/booking.css";
+
 export default function Booking() {
   const { user } = useAuthContext();
 
@@ -26,6 +28,8 @@ function BookingPage({ barberId }: BookingPageProps) {
     refreshBookings,
   } = useBarberBookings(barberId);
 
+  console.log(bookings);
+
   async function handleBookingSuccess() {
     await refreshBookings();
   }
@@ -35,12 +39,12 @@ function BookingPage({ barberId }: BookingPageProps) {
       <h1>Bookings</h1>
 
       {/* CREATE BOOKING */}
-
-      <BookingForm barberId={barberId} onSuccess={handleBookingSuccess} />
-
+      <div className="booking">
+        <BookingForm barberId={barberId} onSuccess={handleBookingSuccess} />
+      </div>
       {/* TODAY'S BOOKINGS */}
 
-      <section>
+      <section className="section-today">
         <h2>Today's Bookings</h2>
 
         {bookingsLoading && <p>Loading bookings...</p>}
@@ -55,9 +59,9 @@ function BookingPage({ barberId }: BookingPageProps) {
           <div>
             {bookings.map((booking) => (
               <article key={booking.id}>
-                <h3>{booking.customer_name}</h3>
+                <h3>{booking.customer_name ?? "Unknown Customer"}</h3>
 
-                <p>{booking.customer_phone}</p>
+                <p>{booking.customer_phone ?? "No phone number"}</p>
 
                 <p>
                   {new Date(booking.slot_time).toLocaleTimeString([], {

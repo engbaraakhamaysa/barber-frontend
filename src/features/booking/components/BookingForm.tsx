@@ -7,6 +7,8 @@ import { useCreateBooking } from "../hooks/useCreateBooking";
 
 import BookingSlotSelector from "./BookingSlotSelector";
 
+import "./booking-form.css";
+
 interface BookingFormProps {
   barberId: number;
   onSuccess: () => void;
@@ -77,7 +79,7 @@ export default function BookingForm({ barberId, onSuccess }: BookingFormProps) {
       <h2>Book Appointment</h2>
 
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="name">
           <label htmlFor="booking-name">Customer Name</label>
 
           <input
@@ -91,7 +93,7 @@ export default function BookingForm({ barberId, onSuccess }: BookingFormProps) {
           />
         </div>
 
-        <div>
+        <div className="phone">
           <label htmlFor="booking-phone">Phone</label>
 
           <input
@@ -124,7 +126,11 @@ export default function BookingForm({ barberId, onSuccess }: BookingFormProps) {
 
         {bookingError && <p>{bookingError}</p>}
 
-        <button type="submit" disabled={loading || selectedSlotId === null}>
+        <button
+          className="submit-button"
+          type="submit"
+          disabled={loading || selectedSlotId === null}
+        >
           {loading ? "Booking..." : "Book Appointment"}
         </button>
       </form>
